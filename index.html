@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="buy">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="angular.js"></script>
+    <!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">-->
+    <!--<script src="http://cdn.bootcss.com/angular.js/1.5.8/angular.js"></script>-->
+    <style>
+        .top{
+            margin-bottom: 20px;
+        }
+        .dropdown .dropdown-menu.show{
+            display: block;
+            width:500px;
+        }
+        .navbar-right{
+            margin-right: 100px;
+        }
+        @font-face{
+            font-family: "iconfont";
+            src:url("./font/iconfont1.woff");
+        }
+        .iconfont {
+            font-family: "iconfont";
+        }
+        .icon-taotaobaotaobao:before { content: "\e898";color:#fff ;font-size: 20px;}
+        .icon-shangxiajiantou:before { border:1px solid #8c8c8c;box-sizing: border-box;font-size: 13px;line-height: 15px;color:#8c8c8c;content: "\e696"; }
+        .icon-shangxiajiantou-copy:before {border:1px solid #8c8c8c;box-sizing: border-box;font-size: 13px;line-height: 10px;color:#8c8c8c;content: "\e603"; }
+        .icon-liaotianqipao:before { font-size: 18px;content: "\e7e9";color:#fff; }
+        #logopo{
+            position: relative;
+        }
+        .logo{
+            position: absolute;
+            top:7px;
+            height:18px;
+            width:18px;
+            right:25px;
+            text-align: center;
+            line-height: 10px;
+            color:orange;
+        }
+        .caret{
+            margin-left: 20px;
+        }
+        .caption>h4{
+        	
+            margin:0 !important;
+        }
+        .caption p{
+            margin:0 !important;
+            height:30px;
+        }
+        .nav>li>a:hover, .nav>li>a:focus{
+            background-color:#fff !important;
+            color:orange !important;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .nav>li:hover .icon-liaotianqipao:before, .nav>li:focus .icon-liaotianqipao:before{
+            color:orange !important;
+        }
+        .nav>li:hover .logo.ng-binding, .nav>li:focus .logo.ng-binding{
+            color:#fff !important;
+        }
+
+    </style>
+<body ng-controller="menu" ng-click="a=false">
+    <div class="top">
+        <nav class="navbar navbar-defaul" style="background:orange" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header" style="margin-left: 50px">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand iconfont icon-taotaobaotaobao" href="#"></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right ">
+                        <li ng-init="a=false" class="sharebox" style="position: relative"><a href="#" style="color:#fff">Link</a>
+
+                            <div style="position: absolute;display: none;top:50px;box-shadow: 0 0 5px #000;padding:0 20px;;left:0;width:200px;" class="share">
+                                <div class="bdsharebuttonbox"><a class="bds_more" href="#" data-cmd="more"></a><a title="分享到QQ空间" class="bds_qzone" href="#" data-cmd="qzone"></a><a title="分享到新浪微博" class="bds_tsina" href="#" data-cmd="tsina"></a><a title="分享到腾讯微博" class="bds_tqq" href="#" data-cmd="tqq"></a><a title="分享到人人网" class="bds_renren" href="#" data-cmd="renren"></a><a title="分享到微信" class="bds_weixin" href="#" data-cmd="weixin"></a></div>
+                                <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+                            </div>
+                        </li>
+                        <li class="dropdown" id="logopo">
+                            <a href="#" style="color:#fff" class="dropdown-toggle" ng-click="a=!a;prevent($event);" data-toggle="dropdown">购物车<span class="caret"></span></a>
+                            <div class="logo iconfont icon-liaotianqipao" style="line-height: 15px"></div>
+                            <div class="logo">{{allnum()}}</div>
+                            <ul class="dropdown-menu" ng-click="prevent($event);stop($event);" ng-class="{show:a}" role="menu">
+                                <li ng-show="bag.length!=0" style="text-align: center"  class="row">
+                                    <div class="col-xs-2"></div>
+                                    <div class="col-xs-2">名称</div>
+                                    <div class="col-xs-2">单价</div>
+                                    <div class="col-xs-2">数量</div>
+                                    <div class="col-xs-2">总价</div>
+                                    <div class="col-xs-2">操作</div>
+                                </li>
+                                <li style="line-height: 34px;text-align: center" ng-repeat="v in bag track by $index" class="row">
+                                    <div class="col-xs-2"><img style="display: block;margin:0 auto;max-width: 30px;max-height: 30px;margin-left:20px" ng-src="{{v.image}}" alt=""></div>
+                                    <div class="col-xs-2">{{v.name}}</div>
+                                    <div class="col-xs-2">{{v.price}}</div>
+                                    <div class="col-xs-2" style="position: relative" ng-model="v.num">{{v.num}}
+                                        <span style="position: absolute;top:-8px;right:0;width:15px;height:15px;" class="iconfont icon-shangxiajiantou-copy"  ng-click="v.num=v.num+1"></span>
+                                        <span style="position: absolute;bottom:10px;right:0;width:15px;height:15px;" class="iconfont icon-shangxiajiantou" ng-click="decnum($index)"></span>
+                                    </div>
+                                    <div class="col-xs-2">{{v.price * v.num}}</div>
+                                    <div class="col-xs-2" style="padding-left:0">
+                                        <a href="javascript:;" class="btn btn-danger" ng-click="delete(v.id)">删除</a>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <li ng-show="bag.length==0"><a href="#">你的购物车是空的，赶紧去添加吧</a></li>
+                                <li ng-show="bag.length!=0">
+                                	<a href="#">总共{{allnum()}}件商品，总金额: {{update()}} 元</a>
+                                    <button class="btn btn-success" style="margin-left: 20px;">结账</button>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </div>
+    <div class="lists">
+        <div style="margin:0 auto;width:1000px;height:200px;" class="row contain">
+            <div class="col-lg-3 col-md-3" ng-repeat="v in goods " style="padding:10px">
+                <div class="thumbnail">
+                    <img ng-src="{{v.image}}" style="width:100px;height:100px;" alt="...">
+                    <div class="caption">
+                        <h5>{{v.name}}</h5>
+                        <p style="line-height: 20px;font-size: 12px;color:#950213">¥{{v.price}}</p>
+                        <p><a href="#" style="width:80px;
+                        height:30px;font-size: 12px" class="btn btn-default btn-success" role="button" ng-click="add(v.id);stop($event)">加入购物车</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</body>
+<script>
+
+   var buy=angular.module("buy",[]);
+    buy.controller("menu",["$scope",function($scope){
+        $scope.bag=[];
+        $scope.goods=[{id:001,name:"戴尔",price:"3562",image:"img/1.jpg"},{id:002,name:"联想",price:"2962",image:"img/2.jpg"},{id:003,name:"华硕",price:"3562",image:"img/3.jpg"},{id:004,name:"苹果",price:"3562",image:"img/4.jpg"},];
+        $scope.add=function(id,e){
+            var temp = $scope.bag.find(function(v,i){
+					return v.id==id	
+             })
+           
+	          if(!temp){
+	              var info = $scope.goods.find(function(v,i){
+	              	return v.id == id;
+	              })
+	              info.num = 1
+	              $scope.bag.push(info);
+	          }else{
+	          	  temp.num+=1
+	        }
+          }
+          
+        $scope.allnum=function(){
+             var number=0;
+            $scope.bag.forEach(function(v){
+                number += v.num;
+            })
+            return number;
+        };
+        $scope.update=function(){
+            var count =0;
+            $scope.bag.forEach(function(v){
+                count += v.price * v.num;
+            })
+            return count;
+        };
+        $scope.delete=function(id){
+        	$scope.bag =  $scope.bag.filter(function(v,i){
+				return v.id!==id;        		
+        	})
+        };
+        $scope.prevent=function(e){
+        	e.stopPropagation();//阻止冒泡
+        }
+        $scope.stop=function(e){
+        	e.preventDefault();//阻止冒泡
+        }
+        $scope.addnum=function(index){
+            var a = $scope.bag[index];
+            var num = parseInt(a.num);
+             a.num= num + 1;
+        }
+        $scope.decnum=function(index){
+            var a = $scope.bag[index];
+            var num = parseInt(a.num);
+            if(num == 0){
+                return;
+            }else{
+                a.num=num - 1
+            }
+        }
+    }])
+</script>
+</html>
